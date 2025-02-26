@@ -11,6 +11,7 @@ class ProfileDetail(DetailView):
     model = ""
     template_name = ""
 
+
 class GameLibraryList(ListView):
     model = ""
     template_name = ""

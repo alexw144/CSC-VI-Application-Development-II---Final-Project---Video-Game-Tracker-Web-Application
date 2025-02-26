@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <link rel = "stylesheet" href = {% static "game_tracker/style.css" %}>
+    </head>
+
+    <body>
+        <header>
+            <h1>Game Tracker</h1>
+        </header>
+        <nav>
+
+        </nav>
+        <hr>
+        {% block content %}
+        {% endblock %}
+    </body>
+
+    <footer>
+        <p>Final Project - Alex Wagner</p>
+    </footer>
+</html>
