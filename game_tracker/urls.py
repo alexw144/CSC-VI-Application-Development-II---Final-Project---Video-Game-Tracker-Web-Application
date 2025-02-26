@@ -7,6 +7,6 @@ urlpatterns = [
     path("profile/", views.ProfileDetail.as_view(), name="profile-detail"),
     path("game-library/", views.GameLibraryList.as_view(), name="game-library-list"),
     path("community/", views.CommunityList.as_view(), name="community-list"),
-    path("game-library/<str:str>/", views.LogsDetail.as_view(), name="game-detail"),
+    path("game-library/<str:str>/", views.GameDetail.as_view(), name="game-detail"),
     path("profle/stats/", views.ProfileStatsDetail.as_view(), name="stats-detail"),
 ]
