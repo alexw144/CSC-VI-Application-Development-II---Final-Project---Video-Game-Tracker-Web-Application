@@ -19,7 +19,12 @@ class GameLibraryList(ListView):
     template_name = ""
 
 
-class CommunityList(ListView):
+class CommunityHomeList(ListView):
+    model = ""
+    template_name = ""
+
+
+class CommunityGameDetail(DetailView):
     model = ""
     template_name = ""
 
