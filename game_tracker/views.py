@@ -4,8 +4,10 @@ from django.views.generic import DetailView, ListView
 
 # Create your views here.
 class Index(View):
-    template_name = ""
+    template_name = "game_tracker/index.html"
 
+    def get(self, request):
+        return render(request, self.template_name)
 
 class ProfileDetail(DetailView):
     model = ""

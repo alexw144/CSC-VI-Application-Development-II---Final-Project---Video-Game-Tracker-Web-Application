@@ -1,7 +1,7 @@
 from django.urls import path
 from game_tracker import views
 
-app_name = "sleeptracker"
+app_name = "game_tracker"
 urlpatterns = [
     path("", views.Index.as_view(), name="index"),
     path("profile/", views.ProfileDetail.as_view(), name="profile-detail"),
