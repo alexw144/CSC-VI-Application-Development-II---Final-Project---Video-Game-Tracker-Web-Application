@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView, ListView
 from .models import Profile
+import json
+from django.http import JsonResponse
 
 # Create your views here.
 class Index(View):
@@ -20,7 +22,18 @@ class ProfileDetail(DetailView):
         else:
             Profile.objects.create(user=self.request.user)
             return self.model.objects.get(user=self.request.user)
-
+"""
+    def updateProfile(self, request):
+        if request.method == 'POST':
+            profile = self.get_object()
+            user = profile.user
+            
+            user.save()
+            profile.save()
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+"""
 
 class GameLibraryList(ListView):
     model = ""
