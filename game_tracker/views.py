@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView, ListView
+from .models import Profile
 
 # Create your views here.
 class Index(View):
@@ -10,8 +11,15 @@ class Index(View):
         return render(request, self.template_name)
 
 class ProfileDetail(DetailView):
-    model = ""
-    template_name = ""
+    model = Profile
+    template_name = "game_tracker/gametrackerprofile.html"
+
+    def get_object(self):
+        if Profile.objects.filter(user=self.request.user):
+            return self.model.objects.get(user=self.request.user)
+        else:
+            Profile.objects.create(user=self.request.user)
+            return self.model.objects.get(user=self.request.user)
 
 
 class GameLibraryList(ListView):
