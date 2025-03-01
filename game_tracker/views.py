@@ -22,18 +22,22 @@ class ProfileDetail(DetailView):
         else:
             Profile.objects.create(user=self.request.user)
             return self.model.objects.get(user=self.request.user)
-"""
+
     def updateProfile(self, request):
         if request.method == 'POST':
+            data = json.loads(request.body)
             profile = self.get_object()
             user = profile.user
-            
+            profile.birthday = data.get('birthday', profile.birthday)
+            profile.gender = data.get('gender', profile.gender)
+            user.username = data.get('username', user.username)
+            user.email = data.get('email', user.email)
             user.save()
             profile.save()
             return JsonResponse({'status': 'success'})
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
-"""
+
 
 class GameLibraryList(ListView):
     model = ""

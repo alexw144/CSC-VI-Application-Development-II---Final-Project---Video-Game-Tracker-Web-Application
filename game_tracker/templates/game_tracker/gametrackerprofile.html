@@ -19,6 +19,18 @@
         </div>
         <div>
             <h2>Update your information</h2>
+            <form method="post">
+                {% csrf_token %}
+                <label for="bday">Birthday: </label><br>
+                <input type="date" id="bday" name="bday" required><br>
+                <label for="gender">Gender: </label><br>
+                <input type="text" id="gender" name="gender" required><br>
+                <label for="email">Email: </label><br>
+                <input type="text" id="email" name="email" required><br>
+                <label for="usrn">Username: </label><br>
+                <input type="text" id="usrn" name="usrn" required><br>
+                <button id="profile-upd-submit-btn" >Submit</button>
+            </form>
         </div>
     </div>
 </section>
