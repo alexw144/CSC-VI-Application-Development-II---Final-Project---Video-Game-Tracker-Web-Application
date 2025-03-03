@@ -4,7 +4,7 @@ from game_tracker import views
 app_name = "game_tracker"
 urlpatterns = [
     path("", views.Index.as_view(), name="index"),
-    path("profile/", views.ProfileDetail.as_view(), name="profile-detail"),
+    path("profile/<str:str>/", views.ProfileDetail.as_view(), name="profile-detail"),
     path("game-library/", views.GameLibraryList.as_view(), name="game-library-list"),
     path("community/", views.CommunityHomeList.as_view(), name="community-home-list"),
     path("community/<str:str>/", views.CommunityGameDetail.as_view(), name="community-game-detail"),

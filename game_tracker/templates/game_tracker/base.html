@@ -7,16 +7,15 @@
         <title>{% block title %}{% endblock %}</title>
         <link rel = "stylesheet" href = {% static "game_tracker/style.css" %}>
     </head>
-
     <body>
         <header>
             <h1>Game Tracker</h1>
         </header>
         <nav>
-            <a href=""><button class="header_button">Home</button></a>
+            <a href="{% url 'game_tracker:index' %}"><button class="header_button">Home</button></a>
             <a href=""><button class="header_button">Game Library</button></a>
             <a href=""><button class="header_button">Community</button></a>
-            <a href=""><button class="header_button">Profile</button></a>
+            <a href="{% url 'game_tracker:profile-detail' str=request.user.username %}"><button class="header_button">Profile</button></a>
         </nav>
         <hr>
         {% block content %}

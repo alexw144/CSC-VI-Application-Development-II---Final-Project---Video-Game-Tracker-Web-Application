@@ -3,7 +3,7 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<h1 class="page_heading">
+<h1 class="page_heading" id="profile_page_heading">
     {{ profile.user.username }}'s Profile
 </h1>
 <section class="index_style">
@@ -11,9 +11,10 @@
         <div>
             <h2>Your current information</h2>
             <p>Name: {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
-            <p>Email Address: {{ profile.user.email }}</p>
-            <p>Birthday: {{ profile.birthday }}</p>
-            <p>Gender: {{ profile.gender }}</p>
+            <p id="current_usrn">Username: {{ profile.user.username }}</p>
+            <p id="current_email">Email Address: {{ profile.user.email }}</p>
+            <p id="current_bday">Birthday: {{ profile.birthday }}</p>
+            <p id="current_gender">Gender: {{ profile.gender }}</p>
             <p>Join Date: {{ profile.user.date_joined }}</p>
             <p>Last Online: {{ profile.user.date_joined }}</p>
         </div>
@@ -22,16 +23,17 @@
             <form method="post">
                 {% csrf_token %}
                 <label for="bday">Birthday: </label><br>
-                <input type="date" id="bday" name="bday" required><br>
+                <input type="date" id="bday" name="bday" value="{% if profile.birthday %}{{ profile.birthday|date:'Y-m-d' }}{% endif %}" required><br>
                 <label for="gender">Gender: </label><br>
-                <input type="text" id="gender" name="gender" required><br>
+                <input type="text" id="gender" name="gender" value="{{ profile.gender }}" required><br>
                 <label for="email">Email: </label><br>
-                <input type="text" id="email" name="email" required><br>
+                <input type="text" id="email" name="email" value="{{ profile.user.email }}" required><br>
                 <label for="usrn">Username: </label><br>
-                <input type="text" id="usrn" name="usrn" required><br>
-                <button id="profile-upd-submit-btn" >Submit</button>
+                <input type="text" id="usrn" name="usrn" value="{{ profile.user.username }}" required><br>
+                <button type="button" id="profile-upd-submit-btn" >Submit</button>
             </form>
         </div>
     </div>
 </section>
 {% endblock %}
+<script src="{% static 'game_tracker/crud.js' %}"></script>
