@@ -6,34 +6,40 @@ import json
 from django.http import JsonResponse
 
 # Create your views here.
+# This is the view that connects to the homepage
 class Index(View):
     template_name = "game_tracker/index.html"
 
     def get(self, request):
         return render(request, self.template_name)
 
+
+# This is the view that coonects to the users Profile page
 class ProfileDetail(DetailView):
     model = Profile
     template_name = "game_tracker/gametrackerprofile.html"
 
+    # This function checks if the logged in user has a profile.
+    # If the user has a profile, the profile is returned. 
     def get_object(self):
         if Profile.objects.filter(user=self.request.user):
             return self.model.objects.get(user=self.request.user)
-        else:
+        else: # if there is no profile connected to the user, a profile is created based from the user.
             Profile.objects.create(user=self.request.user)
             return self.model.objects.get(user=self.request.user)
     
+    # This function is for updating the users profile and information. This function can edited in the future to change the things the user can update.
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         profile = self.get_object()
-        user = profile.user
 
+        # Update Section
         profile.birthday = data.get('birthday', profile.birthday)
         profile.gender = data.get('gender', profile.gender)
-        user.username = data.get('username', user.username)
-        user.email = data.get('email', user.email)
+        profile.user.username = data.get('username', profile.user.username)
+        profile.user.email = data.get('email', profile.user.email)
         
-        user.save()
+        profile.user.save()
         profile.save()
         return JsonResponse({'status': 'success'})
         

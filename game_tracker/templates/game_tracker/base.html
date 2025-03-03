@@ -1,11 +1,12 @@
 {% load static %}
-
+<!-- This is the base html file that will span across all pages.
+    Everypage contains the name off the project/website, a navigation bar, a footer, and more to be determined.-->
 <!DOCTYPE html>
 
 <html>
     <head>
         <title>{% block title %}{% endblock %}</title>
-        <link rel = "stylesheet" href = {% static "game_tracker/style.css" %}>
+        <link rel = "stylesheet" href = "{% static 'game_tracker/style.css' %}">
     </head>
     <body>
         <header>

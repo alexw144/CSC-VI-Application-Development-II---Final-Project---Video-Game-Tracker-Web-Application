@@ -1,6 +1,6 @@
 {% extends "game_tracker/base.html" %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}{{ profile.user.username }}'s Profile{% endblock %}
 
 {% block content %}
 <h1 class="page_heading" id="profile_page_heading">
@@ -23,6 +23,7 @@
             <form method="post">
                 {% csrf_token %}
                 <label for="bday">Birthday: </label><br>
+                <!--Browser console stated the date must be in y-m-d format, that's by the bday input is so different-->
                 <input type="date" id="bday" name="bday" value="{% if profile.birthday %}{{ profile.birthday|date:'Y-m-d' }}{% endif %}" required><br>
                 <label for="gender">Gender: </label><br>
                 <input type="text" id="gender" name="gender" value="{{ profile.gender }}" required><br>
