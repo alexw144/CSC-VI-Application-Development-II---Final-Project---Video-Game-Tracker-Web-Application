@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView, ListView
-from .models import Profile
+from .models import Profile, Game
 import json
 from django.http import JsonResponse
 
@@ -45,8 +45,8 @@ class ProfileDetail(DetailView):
         
 
 class GameLibraryList(ListView):
-    model = ""
-    template_name = ""
+    model = Game
+    template_name = "game_tracker/gamelibrarylist.html"
 
 
 class CommunityHomeList(ListView):

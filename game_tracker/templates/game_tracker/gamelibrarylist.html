@@ -1,0 +1,14 @@
+{% extends "game_tracker/base.html" %}
+
+{% block title %}Game Library{% endblock %}
+
+{% block content %}
+<h1 class="page_heading">
+    Game Library
+</h1>
+<ul>
+    {% for object in object_list %}
+        <li><a href=""><img src="{{ object.game_cover_image.url }}"><br>{{ object.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
