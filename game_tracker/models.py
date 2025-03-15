@@ -20,7 +20,7 @@ class Game(models.Model):
     publisher = models.CharField(max_length=35, blank=True)
     playstation = models.BooleanField(null=True)
     xbox = models.BooleanField(null=True)
-    switch = models.BooleanField(null=True)
+    nintendo = models.BooleanField(null=True)
     pc = models.BooleanField(null=True)
     other = models.BooleanField(null=True)
     release_date = models.DateField(null=True, blank=True)
