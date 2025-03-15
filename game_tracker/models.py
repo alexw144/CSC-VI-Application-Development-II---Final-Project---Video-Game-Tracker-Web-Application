@@ -18,10 +18,13 @@ class Game(models.Model):
     esrb_rating = models.CharField(max_length=10, choices=[('E', 'Everyone'), ('E10', 'Everyone 10+'), ('T', 'Teen'), ('M', 'Mature 17+'), ('A', 'Adult Only 18+'), ('RP', 'Rating Pending'), ('RPM', 'Rating Pending Likely Mature 17+'), ('O', 'Other')], blank=True, default='O')
     developer = models.CharField(max_length=25, blank=True)
     publisher = models.CharField(max_length=25, blank=True)
-    platform = models.CharField(max_length=20, choices=[('P', 'Playstation'), ('X', 'Xbox'), ('S', 'Switch'), ('PC', 'PC'), ('O', 'Other')], blank=True, default='O')
+    playstation = models.BooleanField(null=True)
+    xbox = models.BooleanField(null=True)
+    switch = models.BooleanField(null=True)
+    pc = models.BooleanField(null=True)
+    other = models.BooleanField(null=True)
     release_date = models.DateField(null=True, blank=True)
     game_cover_image = models.ImageField(default='fallback.png', blank=True)
-
 
     def __str__(self):
         return self.title
