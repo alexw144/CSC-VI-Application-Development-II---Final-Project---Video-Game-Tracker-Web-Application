@@ -1,3 +1,4 @@
+<!-- This page is the Game Library. It shows every game there is in the databse.-->
 {% extends "game_tracker/base.html" %}
 
 {% block title %}Game Library{% endblock %}
@@ -6,6 +7,7 @@
 <h1 class="page_heading">
     Game Library
 </h1>
+<!--If you click on the game title or image the user will be sent to that specific games page.-->
 <ul>
     {% for object in object_list %}
         <li><a href="{% url 'game_tracker:game-detail' object.slug %}"><img src="{{ object.game_cover_image.url }}" width="275" height="350"><br>{{ object.title }}</a></li>

@@ -1,6 +1,7 @@
+<!-- This page is for specific games. It will show of the games inforamtion and will show the users stats too.-->
 {% extends "game_tracker/base.html" %}
 
-{% block title %}game.title{% endblock %}
+{% block title %}{{ game.title }}{% endblock %}
 
 {% block content %}
 <h1 class="page_heading">
@@ -21,7 +22,8 @@
 <p>Genre: {{game.genre}}</p>
 <p>ESRB Rating: {{game.get_esrb_rating_display}}</p> <!--I found this interesting. Django automatically does its magic here to display the readable part of the coice. So "Teen" instead of "T"-->
 <p>Release Date: {{game.release_date}}</p>
-<p>Systems:</p>
+<p>Platform(s):</p>
+<!--If the system selected is True, then it is shown-->
 <ul>
     {% if game.playstation %}
     <li>Playstation</li>
@@ -39,6 +41,5 @@
     <li>Other</li>
     {% endif %}
 </ul>
-
 
 {% endblock %}
