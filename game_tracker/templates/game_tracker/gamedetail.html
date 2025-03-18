@@ -1,0 +1,44 @@
+{% extends "game_tracker/base.html" %}
+
+{% block title %}game.title{% endblock %}
+
+{% block content %}
+<h1 class="page_heading">
+    {{game.title}}
+</h1>
+<img src="{{ game.game_cover_image.url }}" width="275" height="350">
+<h2>
+    Synopsis
+</h2>
+<p>
+    {{game.synopsis}}
+</p>
+<h2>
+    Information:
+</h2>
+<p>Developer: {{game.developer}}</p>
+<p>Publisher: {{game.publisher}}</p>
+<p>Genre: {{game.genre}}</p>
+<p>ESRB Rating: {{game.get_esrb_rating_display}}</p> <!--I found this interesting. Django automatically does its magic here to display the readable part of the coice. So "Teen" instead of "T"-->
+<p>Release Date: {{game.release_date}}</p>
+<p>Systems:</p>
+<ul>
+    {% if game.playstation %}
+    <li>Playstation</li>
+    {% endif %}
+    {% if game.xbox %}
+    <li>Xbox</li>
+    {% endif %}
+    {% if game.nintendo %}
+    <li>Nintendo</li>
+    {% endif %}
+    {% if game.pc %}
+    <li>PC</li>
+    {% endif %}
+    {% if game.other %}
+    <li>Other</li>
+    {% endif %}
+</ul>
+
+
+{% endblock %}

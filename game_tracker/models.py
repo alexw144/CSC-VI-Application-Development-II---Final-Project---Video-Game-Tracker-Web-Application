@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 # Create your models here.
 class Profile(models.Model):
@@ -25,6 +26,12 @@ class Game(models.Model):
     other = models.BooleanField(null=True)
     release_date = models.DateField(null=True, blank=True)
     game_cover_image = models.ImageField(default='fallback.png', blank=True)
+    slug = models.SlugField(max_length=200, unique=False, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(Game, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title

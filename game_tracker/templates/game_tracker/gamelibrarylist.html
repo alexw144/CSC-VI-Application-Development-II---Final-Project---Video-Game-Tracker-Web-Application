@@ -8,7 +8,7 @@
 </h1>
 <ul>
     {% for object in object_list %}
-        <li><a href=""><img src="{{ object.game_cover_image.url }}" width="275" height="350"><br>{{ object.title }}</a></li>
+        <li><a href="{% url 'game_tracker:game-detail' object.slug %}"><img src="{{ object.game_cover_image.url }}" width="275" height="350"><br>{{ object.title }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}

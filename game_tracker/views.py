@@ -60,8 +60,8 @@ class CommunityGameDetail(DetailView):
 
 
 class GameDetail(DetailView):
-    model = ""
-    template_name = ""
+    model = Game
+    template_name = "game_tracker/gamedetail.html"
 
 
 class ProfileStatsDetail(DetailView): 
