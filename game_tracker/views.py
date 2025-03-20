@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView, ListView
-from .models import Profile, Game
+from .models import Profile, Game, Review, UsersGamesStat
 import json
 from django.http import JsonResponse
 
@@ -54,6 +54,24 @@ class GameLibraryList(ListView):
 class GameDetail(DetailView):
     model = Game
     template_name = "game_tracker/gamedetail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = self.add_reviews_to_context(context)
+        context = self.add_user_stats_to_context(context)
+        return context
+    
+    def add_reviews_to_context(self, context):
+        game = self.get_object()
+        reviews = Review.objects.filter(game=game)
+        context['reviews'] = reviews
+        return context
+
+    def add_user_stats_to_context(self, context):
+        game = self.get_object()
+        user_stats = UsersGamesStat.objects.filter(game=game, user=self.request.user).first()
+        context['user_stats'] = user_stats
+        return context
 
 
 class CommunityHomeList(ListView):

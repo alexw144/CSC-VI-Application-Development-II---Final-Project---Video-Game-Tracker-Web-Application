@@ -11,9 +11,7 @@
 <h2>
     Synopsis
 </h2>
-<p>
-    {{game.synopsis}}
-</p>
+<p>{{game.synopsis}}</p>
 <h2>
     Information:
 </h2>
@@ -41,5 +39,29 @@
     <li>Other</li>
     {% endif %}
 </ul>
+<h2>
+    Personal Stats
+</h2>
+{% if user_stats %}
+    <h3>
+        {{ user_stats.user.username }}'s Stats
+    </h3>
+    <p>{{ user_stats.time_played }}</p>
+{% else %}
+    <p>No user stats available.</p>
+{% endif %}
+<h2>
+    Reviews
+</h2>
+<!--reviews is from the context. If reviews exists shows them all. Else, display a 'no reviews' message.-->
+{% if reviews %}
+    {% for review in reviews %}
+        <h3>{{ review.review_title }}</h3>
+        <p>{{ review.review_body }}</p>
+        <p><strong>Reviewed by:</strong> {{ review.user.username }}</p>
+    {% endfor %}
+{% else %}
+    <p>No reviews yet for this game.</p>
+{% endif %}
 
 {% endblock %}
