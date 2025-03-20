@@ -14,7 +14,7 @@ class Index(View):
         return render(request, self.template_name)
 
 
-# This is the view that coonects to the users Profile page
+# This is the view that connects to the users Profile page
 class ProfileDetail(DetailView):
     model = Profile
     template_name = "game_tracker/gametrackerprofile.html"
@@ -44,9 +44,16 @@ class ProfileDetail(DetailView):
         return JsonResponse({'status': 'success'})
         
 
+# This is the view that connects to the Game Library. It displays all the games.
 class GameLibraryList(ListView):
     model = Game
     template_name = "game_tracker/gamelibrarylist.html"
+
+
+# This is the view that connects to a specific game page. It displays all the information about the game.
+class GameDetail(DetailView):
+    model = Game
+    template_name = "game_tracker/gamedetail.html"
 
 
 class CommunityHomeList(ListView):
@@ -57,11 +64,6 @@ class CommunityHomeList(ListView):
 class CommunityGameDetail(DetailView):
     model = ""
     template_name = ""
-
-
-class GameDetail(DetailView):
-    model = Game
-    template_name = "game_tracker/gamedetail.html"
 
 
 class ProfileStatsDetail(DetailView): 

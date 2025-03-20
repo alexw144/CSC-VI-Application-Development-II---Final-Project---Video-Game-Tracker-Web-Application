@@ -35,3 +35,31 @@ class Game(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class UsersGamesStat(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users_games_stats')
+    game = models.OneToOneField(Game, on_delete=models.CASCADE)
+    time_played = models.DurationField(default="00:00:00")
+    completion = models.BooleanField(null=True)
+    date_first_played = models.DateField(null=True, blank=True)
+    date_last_played = models.DateField(null=True, blank=True)
+    date_beaten = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=10, choices=[('P', 'Playing'), ('PtP', 'Plan to Play'), ('C', 'Completed'), ('B', 'Beaten'), ('H', 'On Hold'), ('W', 'Wishlist'), ('R', 'Replaying'), ('O', 'Other')], blank=True, default='O')
+    user_rating = models.CharField(max_length=10, choices=[('-', 'Not Rated'),('1', 'Appalling'),('2', 'Horrible'),('3', 'Very Bad'),('4', 'Bad'),('5', 'Average'),('6', 'Fine'),('7', 'Good'),('8', 'Very Good'),('9', 'Great'),('10', 'Masterpiece')], blank=True, default='O')
+    progress_percentage = models.FloatField(default=0.0)
+    achievement_count = models.IntegerField(default=0)
+    notes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username + "'s " + self.game.title + " Stats"
+
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_reviews')
+    game = models.OneToOneField(Game, on_delete=models.CASCADE)
+    review_title = models.CharField(max_length=100, blank=False)
+    review_body = models.TextField(blank=False)
+
+    def __str__(self):
+        return self.user.username + "'s " + self.game.title + " Review"
