@@ -46,7 +46,15 @@
     <h3>
         {{ user_stats.user.username }}'s Stats
     </h3>
-    <p>{{ user_stats.time_played }}</p>
+    <p>Time Played: {{ user_stats.time_played }}</p>
+    <p>First Played: {{ user_stats.date_first_played }}</p>
+    <p>Last Played: {{ user_stats.date_last_played }}</p>
+    <p>Date Beaten: {{ user_stats.date_beaten }}</p>
+    <p>Status: {{ user_stats.get_status_display }}</p>
+    <p>Rating: {{ user_stats.get_user_rating_display }}({{ user_stats.user_rating }})</p>
+    <p>Percent Completed: {{ user_stats.progress_percentage }}</p>
+    <p>Achievements: {{ user_stats.achievement_count }}</p>
+    <p>Notes:{{ user_stats.notes }}</p>
 {% else %}
     <p>No user stats available.</p>
 {% endif %}

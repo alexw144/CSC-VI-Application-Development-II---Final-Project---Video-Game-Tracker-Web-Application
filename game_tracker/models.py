@@ -41,7 +41,6 @@ class UsersGamesStat(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users_games_stats')
     game = models.OneToOneField(Game, on_delete=models.CASCADE)
     time_played = models.DurationField(default="00:00:00")
-    completion = models.BooleanField(null=True)
     date_first_played = models.DateField(null=True, blank=True)
     date_last_played = models.DateField(null=True, blank=True)
     date_beaten = models.DateField(null=True, blank=True)
