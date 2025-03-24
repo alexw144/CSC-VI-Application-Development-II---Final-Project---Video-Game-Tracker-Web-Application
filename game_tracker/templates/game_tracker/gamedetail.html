@@ -39,6 +39,7 @@
     <li>Other</li>
     {% endif %}
 </ul>
+<p id="gameSlug" value="{{game.slug}}">{{game.slug}}</p>
 <h2>
     Personal Stats
 </h2>
@@ -46,18 +47,79 @@
     <h3>
         {{ user_stats.user.username }}'s Stats
     </h3>
-    <p>Time Played: {{ user_stats.time_played }}</p>
-    <p>First Played: {{ user_stats.date_first_played }}</p>
-    <p>Last Played: {{ user_stats.date_last_played }}</p>
-    <p>Date Beaten: {{ user_stats.date_beaten }}</p>
-    <p>Status: {{ user_stats.get_status_display }}</p>
-    <p>Rating: {{ user_stats.get_user_rating_display }}({{ user_stats.user_rating }})</p>
-    <p>Percent Completed: {{ user_stats.progress_percentage }}</p>
-    <p>Achievements: {{ user_stats.achievement_count }}</p>
-    <p>Notes:{{ user_stats.notes }}</p>
+    <p id="current_time_played">Time Played: {{ user_stats.time_played }}</p>
+    <p id="current_first_played">First Played: {{ user_stats.date_first_played }}</p>
+    <p id="current_last_played">Last Played: {{ user_stats.date_last_played }}</p>
+    <p id="current_date_beaten">Date Beaten: {{ user_stats.date_beaten }}</p>
+    <p id="current_status">Status: {{ user_stats.get_status_display }}</p>
+    <p id="current_rating">Rating: {{ user_stats.get_user_rating_display }}({{ user_stats.user_rating }})</p>
+    <p id="current_percent_completed">Percent Completed: {{ user_stats.progress_percentage }}</p>
+    <p id="current_achievement_count">Achievements: {{ user_stats.achievement_count }}</p>
+    <p id="current_notes">Notes: {{ user_stats.notes }}</p>
 {% else %}
-    <p>No user stats available.</p>
+<h3 id="current_user_game_stats_h3">
+    You Don't Have any stats for this game yet
+</h3>
+<p id="current_time_played">Time Played: </p>
+<p id="current_first_played">First Played: </p>
+<p id="current_last_played">Last Played: </p>
+<p id="current_date_beaten">Date Beaten: </p>
+<p id="current_status">Status: </p>
+<p id="current_rating">Rating: </p>
+<p id="current_percent_completed">Percent Completed: </p>
+<p id="current_achievement_count">Achievements: </p>
+<p id="current_notes">Notes: </p>
 {% endif %}
+<h3>
+    Update Stats
+</h3>
+<div id="UpdateGameStatsForm">
+    <form method="post">
+        {% csrf_token %}
+        <label for="time_played">Time Played(input as a decimal. ex:1.5 = 1 hour 30 minutes): </label><br>
+        <input type="number" id="time_played" name="time_played" step=".01" value="{{ user_stats.time_played.total_seconds }}" required><br>
+        <label for="first_played">First Played: </label><br>
+        <input type="date" id="first_played" name="first_played" value="{{ user_stats.date_first_played|date:'Y-m-d' }}" required><br>
+        <label for="last_played">Last PLayed: </label><br>
+        <input type="date" id="last_played" name="last_played" value="{{ user_stats.date_last_played|date:'Y-m-d' }}" required><br>
+        <label for="date_beaten">Date Beaten: </label><br>
+        <input type="date" id="date_beaten" name="date_beaten" value="{{ user_stats.date_beaten|date:'Y-m-d' }}" required><br>
+        <label for="status">Status: </label><br>
+        <select name="status" id="status" required>
+            <option value="O" selected disabled hidden>Choose here</option>
+            <option value="P">Playing</option>
+            <option value="PtP">Plan to Play</option>
+            <option value="C">Completed</option>
+            <option value="B">Beaten</option>
+            <option value="H">On Hold</option>
+            <option value="R">Replaying</option>
+            <option value="W">Wishlist</option>
+            <option value="O">Other</option>
+        </select><br>
+        <label for="rating">Rating: </label><br>
+        <select name="rating" id="rating" required>
+            <option value="-" selected disabled hidden>Choose here</option>
+            <option value="10">Masterpiece(10)</option>
+            <option value="9">Great(9)</option>
+            <option value="8">Very Good(8)</option>
+            <option value="7">Good(7)</option>
+            <option value="6">Fine(6)</option>
+            <option value="5">Average(5)</option>
+            <option value="4">Bad(4)</option>
+            <option value="3">Very Bad(3)</option>
+            <option value="2">Horrible(2)</option>
+            <option value="1">Appalling(1)</option>
+            <option value="-">Not Rated(-)</option>
+        </select><br>
+        <label for="perc_comp">Percent Completed: </label><br>
+        <input type="number" id="perc_comp" name="perc_comp" value="{{ user_stats.progress_percentage }}" required><br>
+        <label for="ach_count">Achievement Count: </label><br>
+        <input type="number" id="ach_count" name="ach_count" value="{{ user_stats.achievement_count }}" required><br>
+        <label for="notes">Notes: </label><br>
+        <input type="text" id="notes" name="notes" value="{{ user_stats.notes }}" required><br>
+        <button type="button" id="game-stats-upd-submit-btn" >Submit</button>
+    </form>
+</div>
 <h2>
     Reviews
 </h2>

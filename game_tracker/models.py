@@ -39,7 +39,7 @@ class Game(models.Model):
 
 class UsersGamesStat(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users_games_stats')
-    game = models.OneToOneField(Game, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
     time_played = models.DurationField(default="00:00:00")
     date_first_played = models.DateField(null=True, blank=True)
     date_last_played = models.DateField(null=True, blank=True)
@@ -50,15 +50,27 @@ class UsersGamesStat(models.Model):
     achievement_count = models.IntegerField(default=0)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        # Adding unique constraint for the combination of user and game
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'game'], name='unique_user_game_stat')
+        ]
+
     def __str__(self):
         return self.user.username + "'s " + self.game.title + " Stats"
 
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_reviews')
-    game = models.OneToOneField(Game, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
     review_title = models.CharField(max_length=100, blank=False)
     review_body = models.TextField(blank=False)
+
+    class Meta:
+        # Add a unique constraint to ensure one review per user per game
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'game'], name='unique_user_game_review')
+        ]
 
     def __str__(self):
         return self.user.username + "'s " + self.game.title + " Review"
