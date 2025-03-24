@@ -51,7 +51,7 @@ class UsersGamesStat(models.Model):
     notes = models.TextField(blank=True, null=True)
 
     class Meta:
-        # Adding unique constraint for the combination of user and game
+        # Add a unique constraint to ensure one gamestat per user per game
         constraints = [
             models.UniqueConstraint(fields=['user', 'game'], name='unique_user_game_stat')
         ]

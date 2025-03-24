@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView, ListView
-from .models import Profile, Game, Review, UsersGamesStat
+from .models import Profile, Game, Review, UsersGamesStat, Review
 import json
 from django.http import JsonResponse
 from datetime import timedelta
@@ -68,18 +68,29 @@ class GameDetail(DetailView):
         reviews = Review.objects.filter(game=game)
         context['reviews'] = reviews
         return context
-
+    
     def add_user_stats_to_context(self, context):
         game = self.get_object()
         user_stats = UsersGamesStat.objects.filter(game=game, user=self.request.user).first()
         context['user_stats'] = user_stats
         return context
     
-    # This function is for updating the users profile and information. This function can edited in the future to change the things the user can update.
+    # This function is for posting CRUDs to the dataabse. Specifcally ones relateted to Game Detail page.
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         game = self.get_object()
-        
+        action = data.get('action')
+
+        # determines which POST request and directs as needed
+        if action == 'update_user_game_stats':
+            return self.update_user_game_stats(request, game, data)
+        elif action == 'submit_user_review':
+            return self.submit_user_review(request, game, data)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid action'}, status=400)
+
+    # This function is for updating the users game stats for a specific game or creating new stats.
+    def update_user_game_stats(self, request, game, data): 
         try:
         # Try to get the existing userStats record
             userStats = UsersGamesStat.objects.get(game=game, user=request.user)
@@ -118,6 +129,27 @@ class GameDetail(DetailView):
         userStats.notes = data.get('notes',  userStats.notes)
         
         userStats.save()
+        return JsonResponse({'status': 'success'})
+    
+    # This function is for updating the users game stats for a specific game or creating new stats.
+    def submit_user_review(self, request, game, data):
+        try:
+            # Try to get an existing review by the user for this game
+            review = Review.objects.get(game=game, user=request.user)
+        except Review.DoesNotExist:
+            # If no review exists, create a new one
+            review = Review.objects.create(
+                game=game,
+                user=request.user,
+                review_title=data.get('title', ''),  # Default to empty string if not provided
+                review_body=data.get('review', '')  # Default to empty string if not provided
+            )
+        
+        # Create the review
+        review.review_title = data.get('title', review.review_title)
+        review.review_body = data.get('review', review.review_body)
+        review.save()
+
         return JsonResponse({'status': 'success'})
 
 

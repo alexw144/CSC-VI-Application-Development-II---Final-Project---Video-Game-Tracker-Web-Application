@@ -39,7 +39,7 @@
     <li>Other</li>
     {% endif %}
 </ul>
-<p id="gameSlug" value="{{game.slug}}">{{game.slug}}</p>
+<p hidden id="gameSlug" value="{{game.slug}}">{{game.slug}}</p> <!-- This if for crud.js. It needs the pages slug.-->
 <h2>
     Personal Stats
 </h2>
@@ -77,16 +77,15 @@
     <form method="post">
         {% csrf_token %}
         <label for="time_played">Time Played(input as a decimal. ex:1.5 = 1 hour 30 minutes): </label><br>
-        <input type="number" id="time_played" name="time_played" step=".01" value="{{ user_stats.time_played.total_seconds }}" required><br>
-        <label for="first_played">First Played: </label><br>
-        <input type="date" id="first_played" name="first_played" value="{{ user_stats.date_first_played|date:'Y-m-d' }}" required><br>
+        <input type="number" id="time_played" name="time_played" step=".01" value="{{ user_stats.time_played.total_seconds }}" required><br> <!-- Connects with document.addEventListener('DOMContentLoaded', function () in crud.js -->
+        <input type="date" id="first_played" name="first_played" value="{{ user_stats.date_first_played|date:'Y-m-d' }}" required><br> <!-- |date:'Y-m-d' is needed to display the date-->
         <label for="last_played">Last PLayed: </label><br>
         <input type="date" id="last_played" name="last_played" value="{{ user_stats.date_last_played|date:'Y-m-d' }}" required><br>
         <label for="date_beaten">Date Beaten: </label><br>
         <input type="date" id="date_beaten" name="date_beaten" value="{{ user_stats.date_beaten|date:'Y-m-d' }}" required><br>
         <label for="status">Status: </label><br>
         <select name="status" id="status" required>
-            <option value="O" selected disabled hidden>Choose here</option>
+            <option value="O" selected disabled hidden>Choose here</option> <!-- this option is meant for a default/shown. It is not meant to be used.-->
             <option value="P">Playing</option>
             <option value="PtP">Plan to Play</option>
             <option value="C">Completed</option>
@@ -98,7 +97,7 @@
         </select><br>
         <label for="rating">Rating: </label><br>
         <select name="rating" id="rating" required>
-            <option value="-" selected disabled hidden>Choose here</option>
+            <option value="-" selected disabled hidden>Choose here</option> 
             <option value="10">Masterpiece(10)</option>
             <option value="9">Great(9)</option>
             <option value="8">Very Good(8)</option>
@@ -133,5 +132,17 @@
 {% else %}
     <p>No reviews yet for this game.</p>
 {% endif %}
-
+<h3>
+    Write a Review Here
+</h3>
+<div id="UpdateGameStatsForm">
+    <form method="post">
+        {% csrf_token %}
+        <label for="review_title">Heading: </label><br>
+        <input type="text" id="review_title" name="review_title" required><br>
+        <label for="review_body">Review: </label><br>
+        <input type="text" id="review_body" name="review_body" required><br>
+        <button type="button" id="user-review-submit-btn" >Submit</button>
+    </form>
+</div>
 {% endblock %}

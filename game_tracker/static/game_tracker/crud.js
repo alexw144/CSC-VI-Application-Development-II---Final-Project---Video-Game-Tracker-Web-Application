@@ -6,6 +6,10 @@ if (document.getElementById("game-stats-upd-submit-btn")){
     const gameUpdateSubmitButton = document.getElementById("game-stats-upd-submit-btn").addEventListener("click", gameStatUpdateSubmitButtonListener);
 }
 
+if (document.getElementById("user-review-submit-btn")){
+    const userReviewSubmitButton = document.getElementById("user-review-submit-btn").addEventListener("click", userReviewSubmitButtonListener);
+}
+
 // asynchronous function with no arguements. Gets called when profile-upd-submit-btn is clicked.
 async function profileUpdateSubmitButtonListener() {
     // Retvires the values of the html elements from the profile page that the user entered. This will be the new updated info.
@@ -41,6 +45,7 @@ async function profileUpdateSubmitButtonListener() {
     }
 };
 
+// This function is for changing the time_played field from a duration to a float in hours.
 document.addEventListener('DOMContentLoaded', function () {
     // Get the value from the input field
     const timePlayedInSeconds = parseFloat(document.getElementById('time_played').value);
@@ -67,6 +72,7 @@ async function gameStatUpdateSubmitButtonListener() {
 
     // Prepares the data to get sent to the server
     const data = {
+        action: 'update_user_game_stats', // tells view to update userstats
         time: time_played,
         first: first_played,
         last: last_played,
@@ -79,6 +85,7 @@ async function gameStatUpdateSubmitButtonListener() {
     };
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
+    // gets the games webpage slug for later use.
     const gameSlug = document.getElementById('gameSlug').textContent;
 
     // This sends the post request
@@ -89,7 +96,9 @@ async function gameStatUpdateSubmitButtonListener() {
     // It alerts the user if it succeeds or fails.
     if (result.status === 'success') {
         alert('Profile updated successfully!');
-        document.getElementById("current_user_game_stats_h3").textContent = "Your Stats";
+        if (document.getElementById("current_user_game_stats_h3")) {
+            document.getElementById("current_user_game_stats_h3").textContent = "Your Stats";
+        }
         document.getElementById("current_time_played").textContent = "Time Played: " + data.time;
         document.getElementById("current_first_played").textContent = "First Played: " + data.first;
         document.getElementById("current_last_played").textContent = "Last Played: " + data.last;
@@ -99,6 +108,36 @@ async function gameStatUpdateSubmitButtonListener() {
         document.getElementById("current_percent_completed").textContent = "Percent Completed: " + data.percent;
         document.getElementById("current_achievement_count").textContent = "Achievement Count: " + data.achievements;
         document.getElementById("current_notes").textContent = "Notes: " + data.notes;
+    } else {
+        alert('Error: Profile update could not be completed');
+    }
+};
+
+// asynchronous function with no arguements. Gets called when user-review-submit-btn is clicked.
+async function userReviewSubmitButtonListener() {
+    // Retrieves the values of the html elements from the profile page that the user entered. This will be the new updated info.
+    const review_title = document.getElementById("review_title").value;
+    const review_body = document.getElementById("review_body").value;
+
+    // Prepares the data to get sent to the server
+    const data = {
+        action: 'submit_user_review', // tells view to update review
+        title: review_title,
+        review: review_body
+    };
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // gets the games webpage slug for later use.
+    const gameSlug = document.getElementById('gameSlug').textContent;
+
+    // This sends the post request
+    const response = await fetch(`/game/${gameSlug}/`, {method: 'POST', headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrfToken}, body: JSON.stringify(data)});
+    const result = await response.json();
+
+    // If the request was successful, then it changes the html elements to the updated information. No page refresh is needed doing it this way.
+    // It alerts the user if it succeeds or fails.
+    if (result.status === 'success') {
+        alert('Profile updated successfully!');
     } else {
         alert('Error: Profile update could not be completed');
     }
