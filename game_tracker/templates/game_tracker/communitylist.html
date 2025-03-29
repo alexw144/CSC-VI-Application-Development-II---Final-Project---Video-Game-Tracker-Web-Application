@@ -1,0 +1,25 @@
+<!-- This page is the Community Posts. It shows every post there is in the databse.-->
+{% extends "game_tracker/base.html" %}
+
+{% block title %}Community{% endblock %}
+
+{% block content %}
+<h1 class="page_heading">
+    Community
+</h1>
+{% for object in object_list %}
+    <div>
+        <h2>{{ object.post_title }}</h2>
+        <p>Posted by: {{ object.user.username }}</p>
+        <p>Game: {{ object.game.title }}</p>
+        <p>Post type: {{ object.get_post_type_display }}</p>
+        <p>Upload date: {{ object.date_added }}</p>
+        {% if object.post_body %}
+            <p>{{ object.post_body }}</p>
+        {% endif %}
+        {% if object.post_image %}
+            <img src="{{ object.post_image.url }}">
+        {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}
