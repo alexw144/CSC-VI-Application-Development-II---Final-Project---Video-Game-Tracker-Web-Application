@@ -74,3 +74,23 @@ class Review(models.Model):
 
     def __str__(self):
         return self.user.username + "'s " + self.game.title + " Review"
+
+class Post(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='posts')
+    post_title = models.CharField(max_length=100, blank=False)
+    post_body = models.TextField(blank=True)
+    post_image = models.ImageField(blank=True, null=True, upload_to='media/posts/')
+    date_added = models.DateTimeField(auto_now_add=True)
+    post_type = models.CharField(max_length=10, choices=[('Art', 'Art'), ('Img', 'Image'), ('Dis', 'Discussion'), ('Evt', 'Event'), ('Gui', 'Guide'), ('Annn', 'Announcement'), ('Hel', 'Help'), ('O', 'Other')], blank=False, default='O')
+
+    def __str__(self):
+        return self.user.username + "'s " + self.game.title + " Post: " + self.post_title
+    
+class PostComment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_comment')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    post_body = models.TextField(blank=False)
+
+    def __str__(self):
+        return self.user.username + "'s Comment on " + self.post.post_title + " by poster " + self.post.user.username
