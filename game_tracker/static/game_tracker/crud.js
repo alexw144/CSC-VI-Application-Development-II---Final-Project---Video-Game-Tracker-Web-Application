@@ -13,6 +13,8 @@ if (document.getElementById("user-review-submit-btn")){
 // asynchronous function with no arguements. Gets called when profile-upd-submit-btn is clicked.
 async function profileUpdateSubmitButtonListener() {
     // Retvires the values of the html elements from the profile page that the user entered. This will be the new updated info.
+    const fname = document.getElementById("f_name").value;
+    const lname = document.getElementById("l_name").value;
     const bday = document.getElementById("bday").value;
     const gender = document.getElementById("gender").value;
     const email = document.getElementById("email").value;
@@ -20,6 +22,8 @@ async function profileUpdateSubmitButtonListener() {
 
     // Prepares the data to get sent to the server
     const data = {
+        firstname: fname,
+        lastname: lname,
         birthday: bday,
         gender: gender,
         email: email,
@@ -36,6 +40,7 @@ async function profileUpdateSubmitButtonListener() {
     if (result.status === 'success') {
         alert('Profile updated successfully!');
         document.getElementById("profile_page_heading").textContent = data.username + "'s Profile";
+        document.getElementById("current_name").textContent = "Name: " + data.firstname + " " + data.lastname;
         document.getElementById("current_usrn").textContent = "Username: " + data.username;
         document.getElementById("current_email").textContent = "Email Address: " + data.email;
         document.getElementById("current_bday").textContent = "Birthday: " + data.birthday;

@@ -37,6 +37,8 @@ class ProfileDetail(DetailView):
         profile = self.get_object()
 
         # Update Section
+        profile.user.first_name = data.get('firstname', profile.user.first_name)
+        profile.user.last_name = data.get('lastname', profile.user.last_name)
         profile.birthday = data.get('birthday', profile.birthday)
         profile.gender = data.get('gender', profile.gender)
         profile.user.username = data.get('username', profile.user.username)
