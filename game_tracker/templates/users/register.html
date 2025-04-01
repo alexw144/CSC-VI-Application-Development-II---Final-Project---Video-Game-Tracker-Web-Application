@@ -1,0 +1,16 @@
+<!-- This is the user registration page-->
+{% extends "game_tracker/base.html" %}
+{% load static %}
+
+{% block title %}
+Sign Up
+{% endblock %}
+
+{% block content %}
+    <h1>Register a New User</h1>
+    <form action="/register/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button>Submit</button>
+    </form>
+{% endblock %}

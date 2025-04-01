@@ -8,4 +8,5 @@ urlpatterns = [
     path("game-library/", views.GameLibraryList.as_view(), name="game-library-list"),
     path("community/", views.CommunityHomeList.as_view(), name="community-home-list"),
     path("game/<slug:slug>/", views.GameDetail.as_view(), name="game-detail"),
+    path('register/', views.register_view, name="register"),
 ]

@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import DetailView, ListView
 from .models import Profile, Game, Review, UsersGamesStat, Review, Post, PostComment
 import json
 from django.http import JsonResponse
 from datetime import timedelta
+from django.contrib.auth.forms import UserCreationForm
 
 
 # Create your views here.
@@ -163,3 +164,14 @@ class CommunityHomeList(ListView):
             post.comment = PostComment.objects.filter(post=post)
 
         return context
+
+
+def register_view(request):
+    if request.method == "POST": 
+        form = UserCreationForm(request.POST) 
+        if form.is_valid(): 
+            form.save() 
+            return redirect("game_tracker:index")
+    else:
+        form = UserCreationForm()
+    return render(request, "users/register.html", { "form": form })
