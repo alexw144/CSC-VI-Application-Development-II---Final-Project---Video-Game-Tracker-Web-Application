@@ -93,6 +93,7 @@ class PostComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_comment')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     post_body = models.TextField(blank=False)
+    date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username + "'s Comment on " + self.post.post_title + " by poster " + self.post.user.username

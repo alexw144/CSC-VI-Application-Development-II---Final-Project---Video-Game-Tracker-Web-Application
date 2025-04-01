@@ -157,12 +157,9 @@ class CommunityHomeList(ListView):
     model = Post
     template_name = "game_tracker/communitylist.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for post in context['object_list']:
+            post.comment = PostComment.objects.filter(post=post)
 
-class CommunityGameDetail(DetailView):
-    model = ""
-    template_name = ""
-
-
-class ProfileStatsDetail(DetailView): 
-    model = ""
-    template_name = ""
+        return context

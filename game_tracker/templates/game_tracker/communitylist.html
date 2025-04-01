@@ -21,5 +21,16 @@
             <img src="{{ object.post_image.url }}">
         {% endif %}
     </div>
+    <div>
+        {% if object.comment.all %}
+            {% for c in object.comment.all %}
+                <h3>{{ c.user.username }}</h3>
+                <p>{{ c.date_added }}</p>
+                <p>{{ c.post_body }}</p>
+            {% endfor %}
+        {% else %}
+            <p>No comments yet. Be the first one to comment!</p>
+        {% endif %}
+    </div>
 {% endfor %}
 {% endblock %}
