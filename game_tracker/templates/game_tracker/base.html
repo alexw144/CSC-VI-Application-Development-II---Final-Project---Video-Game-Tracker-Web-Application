@@ -16,7 +16,13 @@
             <a href="{% url 'game_tracker:index' %}"><button class="header_button">Home</button></a>
             <a href="{% url 'game_tracker:game-library-list' %}"><button class="header_button">Game Library</button></a>
             <a href="{% url 'game_tracker:community-home-list' %}"><button class="header_button">Community</button></a>
-            <a href="{% url 'game_tracker:profile-detail' str=request.user.username %}"><button class="header_button">Profile</button></a>
+            {% if user_object %}
+                <a href="{% url 'game_tracker:profile-detail' str=request.user.username %}"><button class="header_button">Profile</button></a>
+                <a href="{% url 'game_tracker:logout' %}"><button class="header_button">Logout</button></a>
+            {% else %}
+                <a href="{% url 'game_tracker:login' %}"><button class="header_button">Login</button></a>
+                <a href="{% url 'game_tracker:register' %}"><button class="header_button">Sign Up</button></a>
+            {% endif %}
         </nav>
         <hr>
         {% block content %}
