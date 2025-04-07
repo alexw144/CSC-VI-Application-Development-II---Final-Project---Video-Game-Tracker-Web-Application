@@ -53,13 +53,20 @@ async function profileUpdateSubmitButtonListener() {
 // This function is for changing the time_played field from a duration to a float in hours.
 document.addEventListener('DOMContentLoaded', function () {
     // Get the value from the input field
-    const timePlayedInSeconds = parseFloat(document.getElementById('time_played').value);
+    const timePlayedElement = document.getElementById('time_played');
+    
+    // Check if the element exists
+    if (timePlayedElement) {
+        // Get the value from the input field
+        const timePlayedInSeconds = parseFloat(timePlayedElement.value);
 
-    // Convert the seconds to hours
-    const timePlayedInHours = (timePlayedInSeconds / 3600).toFixed(2); // Convert and format to 2 decimal places
+        // Convert the seconds to hours
+        const timePlayedInHours = (timePlayedInSeconds / 3600).toFixed(2); // Convert and format to 2 decimal places
 
-    // Update the input field with the new value in hours
-    document.getElementById('time_played').value = timePlayedInHours;
+        // Update the input field with the new value in hours
+        timePlayedElement.value = timePlayedInHours;
+        console.log("something1")
+    } 
 });
 
 // asynchronous function with no arguements. Gets called when game-stats-upd-submit-btn is clicked.
