@@ -167,6 +167,30 @@ class CommunityHomeList(ListView):
             post.comment = PostComment.objects.filter(post=post)
 
         return context
+    
+    def post(self, request): 
+        try:
+            data = json.loads(request.body)
+            # Create Comment Section
+            post_id = data.get('post')
+            comment_body = data.get('comment', '')
+            # Fetch the Post object from the database
+            post = Post.objects.get(id=post_id)
+            # Create a new comment linked to the post
+            new_comment = PostComment.objects.create(
+                user=request.user, 
+                post=post, 
+                post_body=comment_body
+            )
+            return JsonResponse({
+                'status': 'success',
+                'comment': {
+                    'username': new_comment.user.username,
+                    'date_added': new_comment.date_added.strftime("%Y-%m-%d %H:%M"),
+                    'post_body': new_comment.post_body
+            }}) # This response is different from the other because it sends all of the information of the new comment back instead of just "success". This will be used in the crud.js file.
+        except Post.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Post not found'})
 
 
 def register_view(request):

@@ -8,6 +8,7 @@
     Community
 </h1>
 {% for object in object_list %}
+<section>
     <div>
         <h2>{{ object.post_title }}</h2>
         <p>Posted by: {{ object.user.username }}</p>
@@ -22,15 +23,34 @@
         {% endif %}
     </div>
     <div>
-        {% if object.comment.all %}
-            {% for c in object.comment.all %}
-                <h3>{{ c.user.username }}</h3>
-                <p>{{ c.date_added }}</p>
-                <p>{{ c.post_body }}</p>
-            {% endfor %}
-        {% else %}
-            <p>No comments yet. Be the first one to comment!</p>
-        {% endif %}
+        <div>
+            <!--This post method was different than all of the other ones I had to do so far. It was tough to figure out.
+            Since each post and comment gets written from a for loop, each post gets an assigned value automatically.
+            I used this value to keep track of which post is which when creating comments and stuff.-->
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" id="post_id_{{ object.id }}" value="{{ object.id }}">
+                <label for="post_comment_{{ object.id }}">Comment: </label>
+                <input type="text" id="post_comment_{{ object.id }}" required>
+                <button type="button" onclick="commentSubmitButtonListener({{ object.id }})">Reply</button> <!--This works but vscode does not like it. I think it is because django lnaguage, javascript, and html are all ebing used.-->
+            </form>
+            <!--<p>{{ object.id }}</p> This code was used for debugging purposes.-->
+        </div>
+        <div id="new-comments-section-{{ object.id }}">
+            <!-- New comments will go here -->
+        </div>
+        <div>
+            {% if object.comment.all %}
+                {% for c in object.comment.all %}
+                    <h3>{{ c.user.username }}</h3>
+                    <p>{{ c.date_added }}</p>
+                    <p>{{ c.post_body }}</p>
+                {% endfor %}
+            {% else %}
+                <p>No comments yet. Be the first one to comment!</p>
+            {% endif %}
+        </div>
     </div>
+</section>
 {% endfor %}
 {% endblock %}

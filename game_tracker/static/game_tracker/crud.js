@@ -10,6 +10,10 @@ if (document.getElementById("user-review-submit-btn")){
     const userReviewSubmitButton = document.getElementById("user-review-submit-btn").addEventListener("click", userReviewSubmitButtonListener);
 }
 
+if (document.getElementById("comment-submit-btn")){
+    const commentSubmitButton = document.getElementById("comment-submit-btn").addEventListener("click", commentSubmitButtonListener);
+}
+
 // asynchronous function with no arguements. Gets called when profile-upd-submit-btn is clicked.
 async function profileUpdateSubmitButtonListener() {
     // Retvires the values of the html elements from the profile page that the user entered. This will be the new updated info.
@@ -71,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // asynchronous function with no arguements. Gets called when game-stats-upd-submit-btn is clicked.
 async function gameStatUpdateSubmitButtonListener() {
-    // Retvires the values of the html elements from the profile page that the user entered. This will be the new updated info.
+    // Retvires the values of the html elements from the game detail page that the user entered. This will be the new updated info.
     const time_played = parseFloat(document.getElementById("time_played").value);
     const first_played = document.getElementById("first_played").value;
     const last_played = document.getElementById("last_played").value;
@@ -127,7 +131,7 @@ async function gameStatUpdateSubmitButtonListener() {
 
 // asynchronous function with no arguements. Gets called when user-review-submit-btn is clicked.
 async function userReviewSubmitButtonListener() {
-    // Retrieves the values of the html elements from the profile page that the user entered. This will be the new updated info.
+    // Retrieves the values of the html elements from the game detail page that the user entered. This will be the new review.
     const review_title = document.getElementById("review_title").value;
     const review_body = document.getElementById("review_body").value;
 
@@ -152,5 +156,52 @@ async function userReviewSubmitButtonListener() {
         alert('Profile updated successfully!');
     } else {
         alert('Error: Profile update could not be completed');
+    }
+};
+
+// asynchronous function. Gets called when comment-submit-btn is clicked.
+async function commentSubmitButtonListener(postId) {
+    // Retrieves the values of the html elements from the community page that the user entered. This will be the new created comment.
+    const post_id = document.getElementById(`post_id_${postId}`).value;
+    const post_comment = document.getElementById(`post_comment_${postId}`).value;
+
+    // Prepares the data to get sent to the server
+    const data = {
+        post: post_id,
+        comment: post_comment
+    };
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // This sends the post request
+    const response = await fetch('/community/', {method: 'POST', headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrfToken}, body: JSON.stringify(data)});
+    const result = await response.json();
+
+    // If the request was successful, then it changes the html elements to the updated information. No page refresh is needed doing it this way.
+    // It alerts the user if it succeeds or fails.
+    if (result.status === 'success') {
+        alert('Comment posted successfully!');
+        // This section of code adds the new comment to the community tab page. It creates, the whole html structure with the heading, date, and body.
+
+        const commentDiv = document.createElement('div');
+
+        const usernameHeader = document.createElement('h3');
+        usernameHeader.textContent = result.comment.username;
+
+        const dateCommentAdded = document.createElement('p');
+        dateCommentAdded.textContent = result.comment.date_added;
+
+        const commentBody = document.createElement('p');
+        commentBody.textContent = result.comment.post_body;
+
+        // Combine them
+        commentDiv.appendChild(usernameHeader);
+        commentDiv.appendChild(dateCommentAdded);
+        commentDiv.appendChild(commentBody);
+
+        // Insert into the page
+        const commentSection = document.getElementById(`new-comments-section-${postId}`);
+        commentSection.appendChild(commentDiv);
+    } else {
+        alert('Error: Comment post could not be completed');
     }
 };
