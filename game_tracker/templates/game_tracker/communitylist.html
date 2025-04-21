@@ -8,7 +8,7 @@
     Community
 </h1>
 {% for object in object_list %}
-<section>
+<section class="community-posts">
     <div>
         <h2>{{ object.post_title }}</h2>
         <p>Posted by: {{ object.user.username }}</p>
@@ -19,7 +19,7 @@
             <p>{{ object.post_body }}</p>
         {% endif %}
         {% if object.post_image %}
-            <img src="{{ object.post_image.url }}">
+            <img class="post-image" src="{{ object.post_image.url }}">
         {% endif %}
     </div>
     <div>
@@ -52,5 +52,6 @@
         </div>
     </div>
 </section>
+<hr>
 {% endfor %}
 {% endblock %}

@@ -4,41 +4,37 @@
 {% block title %}{{ profile.user.username }}'s Profile{% endblock %}
 
 {% block content %}
-<h1 class="page_heading" id="profile_page_heading">
+<h1>
     {{ profile.user.username }}'s Profile
 </h1>
-<section class="index_style">
-    <div>
-        <div>
-            <h2>Your current information</h2>
-            <p id="current_name">Name: {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
-            <p id="current_usrn">Username: {{ profile.user.username }}</p>
-            <p id="current_email">Email Address: {{ profile.user.email }}</p>
-            <p id="current_bday">Birthday: {{ profile.birthday }}</p>
-            <p id="current_gender">Gender: {{ profile.gender }}</p>
-            <p>Join Date: {{ profile.user.date_joined }}</p>
-            <p>Last Online: {{ profile.user.date_joined }}</p>
-        </div>
-        <div>
-            <h2>Update your information</h2>
-            <form method="post">
-                {% csrf_token %}
-                <label for="f_name">Fist Name: </label><br>
-                <input type="text" id="f_name" name="f_name" value="{{ profile.user.first_name }}" required><br>
-                <label for="l_name">Last Name: </label><br>
-                <input type="text" id="l_name" name="l_name" value="{{ profile.user.last_name }}" required><br>
-                <label for="bday">Birthday: </label><br>
-                <!--Browser console stated the date must be in y-m-d format, that's by the bday input is so different-->
-                <input type="date" id="bday" name="bday" value="{% if profile.birthday %}{{ profile.birthday|date:'Y-m-d' }}{% endif %}" required><br>
-                <label for="gender">Gender: </label><br>
-                <input type="text" id="gender" name="gender" value="{{ profile.gender }}" required><br>
-                <label for="email">Email: </label><br>
-                <input type="text" id="email" name="email" value="{{ profile.user.email }}" required><br>
-                <label for="usrn">Username: </label><br>
-                <input type="text" id="usrn" name="usrn" value="{{ profile.user.username }}" required><br>
-                <button type="button" id="profile-upd-submit-btn" >Submit</button>
-            </form>
-        </div>
-    </div>
+<section class="user-profile-info">
+    <h2>Your current information</h2>
+    <p id="current_name">Name: {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+    <p id="current_usrn">Username: {{ profile.user.username }}</p>
+    <p id="current_email">Email Address: {{ profile.user.email }}</p>
+    <p id="current_bday">Birthday: {{ profile.birthday }}</p>
+    <p id="current_gender">Gender: {{ profile.gender }}</p>
+    <p>Join Date: {{ profile.user.date_joined }}</p>
+    <p>Last Online: {{ profile.user.date_joined }}</p>
+</section>
+<section class="user-update-profile-info">
+    <h2>Update your information</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="f_name">Fist Name: </label><br>
+        <input type="text" id="f_name" name="f_name" value="{{ profile.user.first_name }}" required><br>
+        <label for="l_name">Last Name: </label><br>
+        <input type="text" id="l_name" name="l_name" value="{{ profile.user.last_name }}" required><br>
+        <label for="bday">Birthday: </label><br>
+        <!--Browser console stated the date must be in y-m-d format, that's by the bday input is so different-->
+        <input type="date" id="bday" name="bday" value="{% if profile.birthday %}{{ profile.birthday|date:'Y-m-d' }}{% endif %}" required><br>
+        <label for="gender">Gender: </label><br>
+        <input type="text" id="gender" name="gender" value="{{ profile.gender }}" required><br>
+        <label for="email">Email: </label><br>
+        <input type="text" id="email" name="email" value="{{ profile.user.email }}" required><br>
+        <label for="usrn">Username: </label><br>
+        <input type="text" id="usrn" name="usrn" value="{{ profile.user.username }}" required><br>
+        <button type="button" id="profile-upd-submit-btn" >Submit</button>
+    </form>
 </section>
 {% endblock %}
