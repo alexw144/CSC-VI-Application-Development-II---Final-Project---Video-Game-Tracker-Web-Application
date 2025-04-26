@@ -4,6 +4,7 @@
 {% block title %}{{ profile.user.username }}'s Profile{% endblock %}
 
 {% block content %}
+<div class="profile-detail-container">
 <h1>
     {{ profile.user.username }}'s Profile
 </h1>
@@ -37,4 +38,5 @@
         <button type="button" id="profile-upd-submit-btn" >Submit</button>
     </form>
 </section>
+</div>
 {% endblock %}

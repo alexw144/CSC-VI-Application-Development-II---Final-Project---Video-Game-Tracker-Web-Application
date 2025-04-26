@@ -59,36 +59,6 @@ input {
 footer {
     margin-top: 2em;
 }
-.game-library-list-a {
-    text-decoration: none;
-}
-.game-library-list-li {
-    display: inline-block;
-    margin: .5em;
-    padding: 1em;
-    max-width: 275px;
-}
-.game-library-list-ul {
-    margin: 1em 2em 1em 2em; 
-}
-.game-detail-img {
-    margin: 0em 1em 1em 7.5em;
-}
-.game-detail-information {
-    margin: 1em 1em 1em 7.5em;
-}
-.game-detail-personal-stats {
-    margin: 1em 1em 1em 7.5em;
-}
-.game-detail-update-stats {
-    margin: 1em 1em 1em 7.5em;
-}
-.user-profile-info {
-    margin: 1em 1em 1em 7.5em;
-}
-.user-update-profile-info {
-    margin: 1em 1em 1em 7.5em;
-}
 .website-title-heading {
     color: #ffffff;
 }
@@ -97,5 +67,67 @@ footer {
     max-height: 1200px;
 }
 .community-posts {
-    margin: 5em 1em 5em 7.5em;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.game-reviews {
+    width: 100%;
+    max-width: 800px;
+    text-align: left;
+}
+.user-login {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.game-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.game-detail-img {
+    text-align: left;
+}
+.game-detail-information {
+    width: 100%;
+    max-width: 800px;
+    text-align: left;
+}
+.game-detail-personal-stats {
+    width: 100%;
+    max-width: 800px;
+    text-align: left;
+}
+.game-detail-update-stats {
+    width: 100%;
+    max-width: 800px;
+    text-align: left;
+}
+.profile-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profile-detail-container > * {
+    width: 100%;
+    max-width: 800px;
+    text-align: left;
+}
+.game-library-list-ul {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: none;
+}
+.game-library-list-li {
+    margin: .5em;
+    padding: 1em;
+    max-width: 275px;
+}
+.game-library-list-a {
+    text-decoration: none;
 }

@@ -7,48 +7,81 @@
 <h1 class="page_heading">
     Community
 </h1>
+<!--
+<section>
+    <div>
+        <h2>Create a New Post</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="post_game">Game: </label><br>
+            <select name="cars" id="cars">
+                {% for g in game %}
+                    <option value="volvo">Volvo</option>
+                {% endfor %}
+              </select>
+            <label for="l_name">Last Name: </label><br>
+            <input type="text" id="l_name" name="l_name" value="{{ profile.user.last_name }}" required><br>
+            <label for="bday">Birthday: </label><br>
+            <input type="date" id="bday" name="bday" value="{% if profile.birthday %}{{ profile.birthday|date:'Y-m-d' }}{% endif %}" required><br>
+            <label for="gender">Gender: </label><br>
+            <input type="text" id="gender" name="gender" value="{{ profile.gender }}" required><br>
+            <label for="email">Email: </label><br>
+            <input type="text" id="email" name="email" value="{{ profile.user.email }}" required><br>
+            <label for="usrn">Username: </label><br>
+            <input type="text" id="usrn" name="usrn" value="{{ profile.user.username }}" required><br>
+            <button type="button" id="profile-upd-submit-btn" >Submit</button>
+        </form>
+    </div>
+</section>
+-->
 {% for object in object_list %}
 <section class="community-posts">
     <div>
-        <h2>{{ object.post_title }}</h2>
-        <p>Posted by: {{ object.user.username }}</p>
-        <p>Game: {{ object.game.title }}</p>
-        <p>Post type: {{ object.get_post_type_display }}</p>
-        <p>Upload date: {{ object.date_added }}</p>
-        {% if object.post_body %}
-            <p>{{ object.post_body }}</p>
-        {% endif %}
-        {% if object.post_image %}
-            <img class="post-image" src="{{ object.post_image.url }}">
-        {% endif %}
-    </div>
-    <div>
         <div>
-            <!--This post method was different than all of the other ones I had to do so far. It was tough to figure out.
-            Since each post and comment gets written from a for loop, each post gets an assigned value automatically.
-            I used this value to keep track of which post is which when creating comments and stuff.-->
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" id="post_id_{{ object.id }}" value="{{ object.id }}">
-                <label for="post_comment_{{ object.id }}">Comment: </label>
-                <input type="text" id="post_comment_{{ object.id }}" required>
-                <button type="button" onclick="commentSubmitButtonListener({{ object.id }})">Reply</button> <!--This works but vscode does not like it. I think it is because django lnaguage, javascript, and html are all ebing used.-->
-            </form>
-            <!--<p>{{ object.id }}</p> This code was used for debugging purposes.-->
-        </div>
-        <div id="new-comments-section-{{ object.id }}">
-            <!-- New comments will go here -->
-        </div>
-        <div>
-            {% if object.comment.all %}
-                {% for c in object.comment.all %}
-                    <h3>{{ c.user.username }}</h3>
-                    <p>{{ c.date_added }}</p>
-                    <p>{{ c.post_body }}</p>
-                {% endfor %}
-            {% else %}
-                <p>No comments yet. Be the first one to comment!</p>
+            <h2>{{ object.post_title }}</h2>
+            <p>Posted by: {{ object.user.username }}</p>
+            <p>Game: {{ object.game.title }}</p>
+            <p>Post type: {{ object.get_post_type_display }}</p>
+            <p>Upload date: {{ object.date_added }}</p>
+            {% if object.post_body %}
+                <p>{{ object.post_body }}</p>
             {% endif %}
+            {% if object.post_image %}
+                <img class="post-image" src="{{ object.post_image.url }}">
+            {% endif %}
+        </div>
+        <div>
+            {% if user.is_authenticated %}
+            <div>
+                <!-- POST REPLIES FORM -->
+                <!--This post method was different than all of the other ones I had to do so far. It was tough to figure out.
+                Since each post and comment gets written from a for loop, each post gets an assigned value automatically.
+                I used this value to keep track of which post is which when creating comments and stuff.-->
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="post_id_{{ object.id }}" value="{{ object.id }}">
+                    <label for="post_comment_{{ object.id }}">Comment: </label>
+                    <input type="text" id="post_comment_{{ object.id }}" required>
+                    <button type="button" onclick="commentSubmitButtonListener({{ object.id }})">Reply</button> <!--This works but vscode does not like it. I think it is because django lnaguage, javascript, and html are all ebing used.-->
+                </form>
+                <!--<p>{{ object.id }}</p> This code was used for debugging purposes.-->
+            </div>
+            {% endif %}
+            <div id="new-comments-section-{{ object.id }}">
+                <!-- New comments will go here -->
+            </div>
+            <!-- REPLIES -->
+            <div>
+                {% if object.comment.all %}
+                    {% for c in object.comment.all %}
+                        <h3>{{ c.user.username }}</h3>
+                        <p>{{ c.date_added }}</p>
+                        <p>{{ c.post_body }}</p>
+                    {% endfor %}
+                {% else %}
+                    <p>No comments yet. Be the first one to comment!</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </section>

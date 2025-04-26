@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from datetime import timedelta
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -19,7 +20,7 @@ class Index(View):
 
 
 # This is the view that connects to the users Profile page
-class ProfileDetail(DetailView):
+class ProfileDetail(LoginRequiredMixin, DetailView):
     model = Profile
     template_name = "game_tracker/gametrackerprofile.html"
 
@@ -75,7 +76,9 @@ class GameDetail(DetailView):
     
     def add_user_stats_to_context(self, context):
         game = self.get_object()
-        user_stats = UsersGamesStat.objects.filter(game=game, user=self.request.user).first()
+        user_stats = None
+        if self.request.user.is_authenticated:
+            user_stats = UsersGamesStat.objects.filter(game=game, user=self.request.user).first()
         context['user_stats'] = user_stats
         return context
     
