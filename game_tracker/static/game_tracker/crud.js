@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Update the input field with the new value in hours
         timePlayedElement.value = timePlayedInHours;
-        console.log("something1")
     } 
 });
 
@@ -115,7 +114,7 @@ async function gameStatUpdateSubmitButtonListener() {
     // If the request was successful, then it changes the html elements to the updated information. No page refresh is needed doing it this way.
     // It alerts the user if it succeeds or fails.
     if (result.status === 'success') {
-        alert('Profile updated successfully!');
+        alert('Game stats updated successfully!');
         if (document.getElementById("current_user_game_stats_h3")) {
             document.getElementById("current_user_game_stats_h3").textContent = "Your Stats";
         }
@@ -129,7 +128,7 @@ async function gameStatUpdateSubmitButtonListener() {
         document.getElementById("current_achievement_count").textContent = "Achievement Count: " + data.achievements;
         document.getElementById("current_notes").textContent = "Notes: " + data.notes;
     } else {
-        alert('Error: Profile update could not be completed');
+        alert('Error: Game stats update could not be completed');
     }
 };
 
@@ -157,9 +156,9 @@ async function userReviewSubmitButtonListener() {
     // If the request was successful, then it changes the html elements to the updated information. No page refresh is needed doing it this way.
     // It alerts the user if it succeeds or fails.
     if (result.status === 'success') {
-        alert('Profile updated successfully!');
+        alert('Review successfully posted!');
     } else {
-        alert('Error: Profile update could not be completed');
+        alert('Error: Review could not be completed');
     }
 };
 
@@ -184,7 +183,7 @@ async function commentSubmitButtonListener(postId) {
     // If the request was successful, then it changes the html elements to the updated information. No page refresh is needed doing it this way.
     // It alerts the user if it succeeds or fails.
     if (result.status === 'success') {
-        alert('Post posted successfully!');
+        alert('Comment posted successfully!');
         // This section of code adds the new comment to the community tab page. It creates, the whole html structure with the heading, date, and body.
 
         const commentDiv = document.createElement('div');
@@ -207,7 +206,7 @@ async function commentSubmitButtonListener(postId) {
         const commentSection = document.getElementById(`new-comments-section-${postId}`);
         commentSection.appendChild(commentDiv);
     } else {
-        alert('Error: Post could not be completed');
+        alert('Error: Comment could not be completed');
     }
 };
 
@@ -238,7 +237,7 @@ async function postSubmitButtonListener() {
     // If the request was successful, then it changes the html elements to the updated information. No page refresh is needed doing it this way.
     // It alerts the user if it succeeds or fails.
     if (result.status === 'success') {
-        alert('Comment posted successfully!');
+        alert('Post posted successfully!');
         // This section of code adds the new post to the community page.
         const postDiv = document.createElement('div');
 
@@ -276,7 +275,7 @@ async function postSubmitButtonListener() {
         const newPost = document.getElementById('new-posts-section');
         newPost.appendChild(postDiv);
     } else {
-        alert('Error: Comment post could not be completed');
+        alert('Error: Post post could not be completed');
     }
 };
 

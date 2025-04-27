@@ -90,6 +90,7 @@
                 {% csrf_token %}
                 <label for="time_played">Time Played(input as a decimal. ex:1.5 = 1 hour 30 minutes): </label><br>
                 <input type="number" id="time_played" name="time_played" step=".01" value="{{ user_stats.time_played.total_seconds }}" required><br> <!-- Connects with document.addEventListener('DOMContentLoaded', function () in crud.js -->
+                <label for="first_played">First PLayed: </label><br>
                 <input type="date" id="first_played" name="first_played" value="{{ user_stats.date_first_played|date:'Y-m-d' }}" required><br> <!-- |date:'Y-m-d' is needed to display the date-->
                 <label for="last_played">Last PLayed: </label><br>
                 <input type="date" id="last_played" name="last_played" value="{{ user_stats.date_last_played|date:'Y-m-d' }}" required><br>
