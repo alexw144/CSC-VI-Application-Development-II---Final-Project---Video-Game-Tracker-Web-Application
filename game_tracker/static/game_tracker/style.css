@@ -154,3 +154,22 @@ footer {
     font-size: 1.3em;
     text-decoration: none;
 }
+.index-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.index-page-section {
+    width: 100%;
+    max-width: 800px;
+    text-align: left;  
+}
+.index_button {
+    margin: 0em 0em 2em 0em;
+    padding: 1em 1.5em 1em 1.5em;
+    font-size: 1.25em;
+    background-color: #555555;
+    border: none;
+    color: #ffffff;
+    min-width: 250px;
+}

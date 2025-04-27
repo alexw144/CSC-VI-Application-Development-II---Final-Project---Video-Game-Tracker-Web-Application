@@ -7,7 +7,22 @@ HomePage
 {% endblock %}
 
 {% block content %}
-<section>
-    <p>Welcome to the Game Tracker application</p>
+<div class="index-page-container">
+<h1 class="page_heading">
+    Home
+</h1>
+<section class="index-page-section">
+    <p>Welcome to the Game Tracker application!</p>
+    <p>You can view and keep track of your video games.</p>
+    <p>If you are looking for discussions, check out our community page.</p>
+    <h2>Check out our collection of games!</h2>
+    <a href="{% url 'game_tracker:game-library-list' %}"><button class="index_button">Game Library</button></a>
+    <h2>Broswe or create your own community posts</h2>
+    <a href="{% url 'game_tracker:community-home-list' %}"><button class="index_button">Community</button></a>
+    {% if user_object %}
+        <h2>View or update your profile</h2>
+        <a href="{% url 'game_tracker:profile-detail' str=request.user.username %}"><button class="index_button">Profile</button></a>
+    {% endif %}
 </section>
+</div>
 {% endblock %}
