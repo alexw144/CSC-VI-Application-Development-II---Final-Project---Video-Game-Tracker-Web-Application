@@ -7,10 +7,12 @@ Sign Up
 {% endblock %}
 
 {% block content %}
+<section class="user-registration">
     <h1>Register a New User</h1>
     <form action="/register/" method="post">
         {% csrf_token %}
         {{ form }}
         <button>Submit</button>
     </form>
+</section>
 {% endblock %}

@@ -14,6 +14,10 @@ if (document.getElementById("comment-submit-btn")){
     const commentSubmitButton = document.getElementById("comment-submit-btn").addEventListener("click", commentSubmitButtonListener);
 }
 
+if (document.getElementById("post-submit-btn")){
+    const postSubmitButton = document.getElementById("post-submit-btn").addEventListener("click", postSubmitButtonListener);
+}
+
 // asynchronous function with no arguements. Gets called when profile-upd-submit-btn is clicked.
 async function profileUpdateSubmitButtonListener() {
     // Retvires the values of the html elements from the profile page that the user entered. This will be the new updated info.
@@ -167,6 +171,7 @@ async function commentSubmitButtonListener(postId) {
 
     // Prepares the data to get sent to the server
     const data = {
+        action: 'create_user_comment', // tells view to update review
         post: post_id,
         comment: post_comment
     };
@@ -201,6 +206,41 @@ async function commentSubmitButtonListener(postId) {
         // Insert into the page
         const commentSection = document.getElementById(`new-comments-section-${postId}`);
         commentSection.appendChild(commentDiv);
+    } else {
+        alert('Error: Comment post could not be completed');
+    }
+};
+
+// asynchronous function. Gets called when post-submit-btn is clicked.
+async function postSubmitButtonListener() {
+    // Retrieves the values of the html elements from the community page that the user entered. This will be the new created post.
+    const post_game = document.getElementById("post_game").value;
+    const post_title = document.getElementById("post_title").value;
+    const post_image = document.getElementById("post_image").value;
+    const post_body = document.getElementById("post_body").value;
+    const post_type = document.getElementById("post_type").value;
+
+    // Prepares the data to get sent to the server
+    const data = {
+        action: 'create_user_post', // tells view to update review
+        game: post_game,
+        title: post_title,
+        image: post_image,
+        body: post_body,
+        type: post_type
+    };
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // This sends the post request
+    const response = await fetch('/community/', {method: 'POST', headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrfToken}, body: JSON.stringify(data)});
+    const result = await response.json();
+
+    // If the request was successful, then it changes the html elements to the updated information. No page refresh is needed doing it this way.
+    // It alerts the user if it succeeds or fails.
+    if (result.status === 'success') {
+        alert('Comment posted successfully!');
+        // This section of code adds the new post to the community page.
+    
     } else {
         alert('Error: Comment post could not be completed');
     }

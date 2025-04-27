@@ -83,7 +83,7 @@ class Post(models.Model):
     post_body = models.TextField(blank=True)
     post_image = models.ImageField(blank=True, null=True, upload_to='posts/')
     date_added = models.DateTimeField(auto_now_add=True)
-    post_type = models.CharField(max_length=10, choices=[('Art', 'Art'), ('Img', 'Image'), ('Dis', 'Discussion'), ('Evt', 'Event'), ('Gui', 'Guide'), ('Annn', 'Announcement'), ('Hel', 'Help'), ('O', 'Other')], blank=False, default='O')
+    post_type = models.CharField(max_length=10, choices=[('Art', 'Art'), ('Img', 'Image'), ('Dis', 'Discussion'), ('Evt', 'Event'), ('Gui', 'Guide'), ('Ann', 'Announcement'), ('Hel', 'Help'), ('O', 'Other')], blank=False, default='O')
 
     def __str__(self):
         return self.user.username + "'s " + self.game.title + " Post: " + self.post_title

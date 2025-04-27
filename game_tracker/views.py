@@ -82,7 +82,7 @@ class GameDetail(DetailView):
         context['user_stats'] = user_stats
         return context
     
-    # This function is for posting CRUDs to the dataabse. Specifcally ones relateted to Game Detail page.
+    # This function is for posting CRUDs to the database. Specifcally ones relateted to Game Detail page.
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         game = self.get_object()
@@ -166,34 +166,57 @@ class CommunityHomeList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['games'] = Game.objects.all()
         for post in context['object_list']:
             post.comment = PostComment.objects.filter(post=post)
 
         return context
     
     def post(self, request): 
-        try:
-            data = json.loads(request.body)
-            # Create Comment Section
-            post_id = data.get('post')
-            comment_body = data.get('comment', '')
-            # Fetch the Post object from the database
-            post = Post.objects.get(id=post_id)
-            # Create a new comment linked to the post
-            new_comment = PostComment.objects.create(
-                user=request.user, 
-                post=post, 
-                post_body=comment_body
-            )
-            return JsonResponse({
-                'status': 'success',
-                'comment': {
-                    'username': new_comment.user.username,
-                    'date_added': new_comment.date_added.strftime("%Y-%m-%d %H:%M"),
-                    'post_body': new_comment.post_body
-            }}) # This response is different from the other because it sends all of the information of the new comment back instead of just "success". This will be used in the crud.js file.
-        except Post.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Post not found'})
+        data = json.loads(request.body)
+        action = data.get('action')
+        
+        # determines which POST request and directs as needed
+        if action == 'create_user_comment':
+            return self.create_user_comment(request, data)
+        elif action == 'create_user_post':
+            return self.create_user_post(request, data)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid action'}, status=400)
+            
+    def create_user_comment(self, request, data):
+        # Creating a Comment
+        post_id = data.get('post')
+        comment_body = data.get('comment', '')
+        # Fetch the Post object from the database
+        post = Post.objects.get(id=post_id)
+        # Create a new comment linked to the post
+        new_comment = PostComment.objects.create(
+            user=request.user, 
+            post=post, 
+            post_body=comment_body
+        )
+        return JsonResponse({
+            'status': 'success',
+            'comment': {
+                'username': new_comment.user.username,
+                'date_added': new_comment.date_added.strftime("%Y-%m-%d %H:%M"),
+                'post_body': new_comment.post_body
+        }}) # This response is different from the other because it sends all of the information of the new comment back instead of just "success". This will be used in the crud.js file.
+    
+    def create_user_post(self, request, data):
+        game = Game.objects.get(id=data.get('game'))
+
+        # Creating the new post
+        Post.objects.create(
+            user=request.user,
+            game=game,
+            post_title=data.get('title'),
+            post_body=data.get('body', ''),
+            post_image=data.get('image') or None,
+            post_type=data.get('type')
+        )
+        return JsonResponse({'status': 'success'})
 
 
 def register_view(request):
