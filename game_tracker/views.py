@@ -181,6 +181,8 @@ class CommunityHomeList(ListView):
             return self.create_user_comment(request, data)
         elif action == 'create_user_post':
             return self.create_user_post(request, data)
+        elif action == 'delete_user_post':
+            return self.delete_user_post(request, data)
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid action'}, status=400)
             
@@ -208,14 +210,32 @@ class CommunityHomeList(ListView):
         game = Game.objects.get(id=data.get('game'))
 
         # Creating the new post
-        Post.objects.create(
+        new_post = Post.objects.create(
             user=request.user,
             game=game,
             post_title=data.get('title'),
             post_body=data.get('body', ''),
-            post_image=data.get('image') or None,
+            #post_image=data.get('image') or None,
             post_type=data.get('type')
         )
+        return JsonResponse({
+            'status': 'success',
+            'post': {
+                'post_title': new_post.post_title,
+                'post_body': new_post.post_body,
+                #'post_image': new_post.post_image.url if new_post.post_image else None,
+                'post_user': new_post.user.username,
+                'post_game': new_post.game.title,
+                'post_type': new_post.post_type,
+                'post_date': new_post.date_added.strftime("%Y-%m-%d")
+        }}) # This response is different from the other because it sends all of the information of the new comment back instead of just "success". This will be used in the crud.js file.
+    
+    def delete_user_post(self, request, data):
+        post = Post.objects.get(id=data.get('post'))
+
+        # Deltes the given post post
+        post.delete()
+
         return JsonResponse({'status': 'success'})
 
 

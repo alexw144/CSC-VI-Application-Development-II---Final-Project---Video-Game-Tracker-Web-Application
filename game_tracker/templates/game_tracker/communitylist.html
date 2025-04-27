@@ -8,10 +8,11 @@
 <h1 class="page_heading">
     Community
 </h1>
+{% if user.is_authenticated %}
 <section class="community-create-post">
     <div>
         <h2>Create a New Post</h2>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="post_game">Game: </label><br>
             <select name="post_game" id="post_game" required>
@@ -21,8 +22,8 @@
               </select><br>
             <label for="post_title">Title: </label><br>
             <input type="text" id="post_title" name="post_title" required><br>
-            <label for="post_image">Image: </label><br>
-            <input type="file" id="post_image" name="post_image"><br>
+            <!--<label for="post_image">Image: </label><br>
+            <input type="file" id="post_image" name="post_image"><br>-->
             <label for="post_body">Body: </label><br>
             <input type="text" id="post_body" name="post_body"><br>
             <label for="post_type">Post Type: </label><br>
@@ -40,8 +41,12 @@
         </form>
     </div>
 </section>
+{% endif %}
+<div id="new-posts-section">
+    <!-- New posts will go here -->
+</div>
 {% for object in object_list %}
-<section class="community-posts">
+<section class="community-posts" id="post-section-{{ object.id }}"> <!-- creates a unique id so it can be easily deleted in CRUD.js -->
     <div>
         <div>
             <h2>{{ object.post_title }}</h2>
@@ -55,6 +60,15 @@
             <p>Game: {{ object.game.title }}</p>
             <p>Post type: {{ object.get_post_type_display }}</p>
             <p>Upload date: {{ object.date_added }}</p>
+            <!-- Delte Post -->
+            {% if user == object.user %}
+            <form method="post">
+                {% csrf_token %}
+                <input hidden type="text" id="post_id" name="post_id" value="{{ object.post.id }}"><br>
+                <!-- Since this is in a for loop, I can't use the buttom listener like I normally did. There would be more than one element with the same id. Thus I put it in the html-->
+                <button type="button" onclick="postDeleteButtonListener({{ object.id }})">Delete</button> <!--This works but vscode does not like it. I think it is because django lnaguage, javascript, and html are all being used.-->
+            </form>
+            {% endif %}
         </div>
         <div>
             {% if user.is_authenticated %}
@@ -68,7 +82,7 @@
                     <input type="hidden" id="post_id_{{ object.id }}" value="{{ object.id }}">
                     <label for="post_comment_{{ object.id }}">Comment: </label>
                     <input type="text" id="post_comment_{{ object.id }}" required>
-                    <button type="button" onclick="commentSubmitButtonListener({{ object.id }})">Reply</button> <!--This works but vscode does not like it. I think it is because django lnaguage, javascript, and html are all ebing used.-->
+                    <button type="button" onclick="commentSubmitButtonListener({{ object.id }})">Reply</button> <!--This works but vscode does not like it. I think it is because django lnaguage, javascript, and html are all being used.-->
                 </form>
                 <!--<p>{{ object.id }}</p> This code was used for debugging purposes.-->
             </div>

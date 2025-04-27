@@ -184,7 +184,7 @@ async function commentSubmitButtonListener(postId) {
     // If the request was successful, then it changes the html elements to the updated information. No page refresh is needed doing it this way.
     // It alerts the user if it succeeds or fails.
     if (result.status === 'success') {
-        alert('Comment posted successfully!');
+        alert('Post posted successfully!');
         // This section of code adds the new comment to the community tab page. It creates, the whole html structure with the heading, date, and body.
 
         const commentDiv = document.createElement('div');
@@ -207,7 +207,7 @@ async function commentSubmitButtonListener(postId) {
         const commentSection = document.getElementById(`new-comments-section-${postId}`);
         commentSection.appendChild(commentDiv);
     } else {
-        alert('Error: Comment post could not be completed');
+        alert('Error: Post could not be completed');
     }
 };
 
@@ -216,7 +216,7 @@ async function postSubmitButtonListener() {
     // Retrieves the values of the html elements from the community page that the user entered. This will be the new created post.
     const post_game = document.getElementById("post_game").value;
     const post_title = document.getElementById("post_title").value;
-    const post_image = document.getElementById("post_image").value;
+    //const post_image = document.getElementById("post_image");  I could not get this to work in time :(
     const post_body = document.getElementById("post_body").value;
     const post_type = document.getElementById("post_type").value;
 
@@ -225,7 +225,7 @@ async function postSubmitButtonListener() {
         action: 'create_user_post', // tells view to update review
         game: post_game,
         title: post_title,
-        image: post_image,
+        //image: post_image,
         body: post_body,
         type: post_type
     };
@@ -240,8 +240,67 @@ async function postSubmitButtonListener() {
     if (result.status === 'success') {
         alert('Comment posted successfully!');
         // This section of code adds the new post to the community page.
-    
+        const postDiv = document.createElement('div');
+
+        const postTitle = document.createElement('h2');
+        postTitle.textContent = result.post.post_title;
+
+        const postBody = document.createElement('p');
+        postBody.textContent = result.post.post_body;
+
+        //const postImage = document.createElement('img');
+        //postImage.src = result.post.post_image;
+
+        const postUser = document.createElement('p');
+        postUser.textContent = "Posted by: " + result.post.post_user;
+        
+        const postGame = document.createElement('p');
+        postGame.textContent = "Game: " + result.post.post_game;
+        
+        const postType = document.createElement('p');
+        postType.textContent = "Post type: " + result.post.post_type;
+
+        const postDate = document.createElement('p');
+        postDate.textContent = "Upload date: " + result.post.post_date;
+
+        // Combine them
+        postDiv.appendChild(postTitle);
+        postDiv.appendChild(postBody);
+        //postDiv.appendChild(postImage);
+        postDiv.appendChild(postUser);
+        postDiv.appendChild(postGame);
+        postDiv.appendChild(postType);
+        postDiv.appendChild(postDate);
+
+        // Insert into the page
+        const newPost = document.getElementById('new-posts-section');
+        newPost.appendChild(postDiv);
     } else {
         alert('Error: Comment post could not be completed');
+    }
+};
+
+// asynchronous function. Gets called when post-delete-btn is clicked. post_id is the {{ object.id }} from the html.
+async function postDeleteButtonListener(post_id) {
+    // Prepares the data to get sent to the server
+    const data = {
+        action: 'delete_user_post', // tells view to update review
+        post: post_id
+    };
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // This sends the post request
+    const response = await fetch('/community/', {method: 'POST', headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrfToken}, body: JSON.stringify(data)});
+    const result = await response.json();
+
+    // If the request was successful, then it changes the html elements to the updated information. No page refresh is needed doing it this way.
+    // It alerts the user if it succeeds or fails.
+    if (result.status === 'success') {
+        alert('Post deleted successfully!');
+        // This section of code deletes the post to from community page.
+        const postSection = document.getElementById(`post-section-${post_id}`);
+        postSection.remove();
+    } else {
+        alert('Error: Post deletion could not be completed');
     }
 };
